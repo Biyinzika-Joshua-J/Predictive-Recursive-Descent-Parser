@@ -16,7 +16,7 @@ class Tokenizer {
         Whether the tokenizer reached the end of the file.
     */
     isEOF(){
-        return this._cursor > this._string.length;
+        return this._cursor === this._string.length;
     }
 
 
@@ -52,14 +52,14 @@ class Tokenizer {
 
         // Strings
         if (string[0] === '"'){
-            let s = '';
-
+            let s = ``;
             do {
+                console.log(string[this._cursor], this._cursor, this._string.length)
                 s += string[this._cursor++];
-            } while (string[this._cursor] !== '"' && !this.isEOF());
+            } while ((string[this._cursor] !== '"')  && !this.isEOF());
 
-            s += this._cursor++; // skip the closing "
-            
+            s += this._cursor++; // skip the closing " or '
+
             return {
                 type: "STRING",
                 value: s,
