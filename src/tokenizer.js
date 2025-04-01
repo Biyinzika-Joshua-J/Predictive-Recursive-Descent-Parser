@@ -1,4 +1,25 @@
 /**
+ * Tokenizer spec
+ */
+const TokenSpec = [
+
+    // Whitespace
+    [/^\s+/, null],
+
+    // Comments
+    [/^\/\/.*/, null],
+
+    [/^\/\*[\s\S]*?\*\//, null],
+
+    // Numbers
+    [/^\d+/, "NUMBER"],
+
+    // Strings
+    [/^"[^"]*"/, "STRING"],
+    [/^'[^']*'/, "STRING"],
+]
+
+/**
  * Lazily pulls a token from a stream
  */
 
@@ -37,37 +58,40 @@ class Tokenizer {
 
         const string = this._string.slice(this._cursor);
 
-        // Numbers
-        if (!Number.isNaN(Number(string[0]))) {
-            let number = '';
-            while (!Number.isNaN(String(string[this._cursor])) && this._cursor < this._string.length) {
-                number += string[this._cursor];
-                this._cursor++;
-            }
-            return {
-                type: "NUMBER",
-                value: number,
-            }
-        }
+        for (const [regExp, tokenType] of TokenSpec){
+            const tokenValue = this._match(regExp, string);
 
-        // Strings
-        if (string[0] === '"'){
-            let s = ``;
-            do {
-                console.log(string[this._cursor], this._cursor, this._string.length)
-                s += string[this._cursor++];
-            } while ((string[this._cursor] !== '"')  && !this.isEOF());
+            if (tokenValue == null){
+                continue;
+            }
 
-            s += this._cursor++; // skip the closing " or '
+            // Should skip next token eg whitespace
+            if (tokenType == null){
+                return this.getNextToken();
+            }
 
             return {
-                type: "STRING",
-                value: s,
+                type: tokenType,
+                value: tokenValue,
             }
         }
 
         return null;
 
+    }
+
+    /**
+     * Matches a token for a regular expression 
+     */
+    _match(regExp, string){
+        let matched = regExp.exec(string);
+        
+        if (matched == null){
+            return null
+        }
+
+        this._cursor += matched[0].length;
+        return matched[0];
     }
 
     
