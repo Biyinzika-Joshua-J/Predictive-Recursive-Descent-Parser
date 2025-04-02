@@ -1,6 +1,12 @@
 
-const { type } = require('os');
 const {Tokenizer} = require('./tokenizer');
+
+// TODO: Add different factories for ast nodes
+
+// 1. AST
+
+// 2. S-Expression AST
+
 
 
 class Parser {
@@ -118,7 +124,86 @@ class Parser {
      * ;
      */
     Expression(){
-        return this.Literal();
+        return this.AdditiveExpression();
+    }
+
+    /**
+     * AdditiveExpression
+     *  : MultiplicativeExpression
+     * | AdditiveExpression ADDITIVE_OPERATOR Literal
+     * ;
+     */
+    AdditiveExpression(){
+        let left = this.MultiplicativeExpression();
+
+        while (this._lookahead.type === 'ADDITIVE_OPERATOR'){
+            // operator: +, -
+
+            const operator = this._eat('ADDITIVE_OPERATOR');
+            const right = this.MultiplicativeExpression();
+
+            left = {
+                type: "BinaryExpression",
+                operator: operator.value,
+                left: left,
+                right: right,
+            }
+        }
+
+        return left;
+    }
+
+     /**
+     * MULTIPLICATIVE Expression
+     *  : MultiplicativeExpression
+     * | MultiplicativeExpression MULTIPLICATIVE_OPERATOR PrimaryExpression -> PrimaryExpression MULTIPLICATIVE_OPERATOR
+     * ;
+     */
+     MultiplicativeExpression(){
+        let left = this.PrimaryExpression();
+
+        while (this._lookahead.type === 'MULTIPLICATIVE_OPERATOR'){
+            // operator: *, /
+
+            const operator = this._eat('MULTIPLICATIVE_OPERATOR');
+            const right = this.PrimaryExpression();
+
+            left = {
+                type: "BinaryExpression",
+                operator: operator.value,
+                left: left,
+                right: right,
+            }
+        }
+
+        return left;
+    }
+
+   
+    /**
+     * PrimaryExpression
+     *      Literal
+     *      | ParenthesizedExpression
+     */
+    PrimaryExpression(){
+        switch (this._lookahead.type){
+            case "(":
+                return this.ParenthesizedExpression();
+            default:
+                return this.Literal();
+        }
+    }
+
+    /**
+     * ParenthesizedExpression
+     *  : '(' Expression ')'
+     *  ;
+     */
+    ParenthesizedExpression(){
+        this._eat('(');
+        const expression = this.Expression();
+        this._eat(')');
+        return expression;
     }
 
 

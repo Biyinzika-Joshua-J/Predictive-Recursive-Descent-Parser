@@ -13,7 +13,11 @@ const TokenSpec = [
      [/^;/, ';'],
      [/^\{/, '{'],
      [/^\}/, '}'],
+     [/^\(/, '('],
+     [/^\)/, ')'],
 
+     [/^[+\-]/, 'ADDITIVE_OPERATOR'], // precedence is to the left
+     [/^[*\/]/, 'MULTIPLICATIVE_OPERATOR'], // precedence is to the right
 
     [/^\/\*[\s\S]*?\*\//, null],
 
