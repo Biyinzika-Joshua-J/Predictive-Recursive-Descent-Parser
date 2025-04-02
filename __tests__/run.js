@@ -5,6 +5,7 @@ const assert = require('assert');
 
 const tests = [
     require('./literal.test'),
+    require('./statement-list.test'),
 ]
 
 const parser = new Parser();
@@ -51,7 +52,7 @@ function test(program, expected){
     console.log(`Test passed`);
 }
 
-// exec();
+exec();
 
 tests.forEach(testRun => testRun(test));
 
