@@ -12,21 +12,28 @@ const parser = new Parser();
 // for manual testing only
 function exec(){
     const program = [
-        `"34"`,
-        `'34'`,
-        `34`,
-        `   34   `,
+        `
+            // name 
+            "Joshua JB";
+            42;
+        `,
+        `"34";`,
+        `'34';`,
+        `34;`,
+        `   34  ;   `,
         `
             // this is a single line comment
-            "The single line comment above should be ignored"
+            "The single line comment above should be ignored";
         `,
         `
         /*
             this is a single line comment
         */ 
     
-        "The multi-line comment above should be ignored"
+        "The multi-line comment above should be ignored";
         `,
+
+        
     ]
     
     for (const programStr of program){

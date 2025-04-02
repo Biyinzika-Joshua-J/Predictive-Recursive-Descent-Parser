@@ -1,28 +1,43 @@
 module.exports = test => {
     // NumericLiteral
-    test('42', {
-        type: 'Program',
-        body: {
-            type: 'NumericLiteral',
-            value: 42
-        }
-    })
+    test('42;', {
+        "type": "Program",
+        "body": [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "NumericLiteral",
+              "value": 42
+            }
+          }
+        ]
+      })
 
     // StringLiteral
-    test('"hello"', {
-        type: 'Program',
-        body: {
-            type: 'StringLiteral',
-            value: 'hello'
-        }
-    })
+    test('"hello";', {
+        "type": "Program",
+        "body": [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "StringLiteral",
+              "value": "hello"
+            }
+          }
+        ]
+      })
 
     // StringLiteral
-    test(`'world'`, {
-        type: 'Program',
-        body: {
-            type: 'StringLiteral',
-            value: 'world'
-        }
-    })
+    test(`'Joshua';`, {
+        "type": "Program",
+        "body": [
+          {
+            "type": "ExpressionStatement",
+            "expression": {
+              "type": "StringLiteral",
+              "value": "Joshua"
+            }
+          }
+        ]
+      })
 };

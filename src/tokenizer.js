@@ -9,6 +9,10 @@ const TokenSpec = [
     // Comments
     [/^\/\/.*/, null],
 
+     // Symbols, delimiters
+     [/^;/, ';'],
+
+
     [/^\/\*[\s\S]*?\*\//, null],
 
     // Numbers

@@ -38,8 +38,52 @@ class Parser {
     Program(){
         return {
             type: 'Program',
-            body: this.Literal()
+            body: this.StatementList()
         };
+    }
+
+    /**
+     * StatementList
+     * : Statement
+     * | StatementList Statement
+     * ;
+     */
+
+    StatementList(){
+        const statements = [];
+        while(this._lookahead != null){
+            statements.push(this.Statement());
+        }
+        return statements;
+    }
+
+
+    /**
+     * Statement
+     *  :ExpressionStatement
+     *  ;
+     */
+    Statement(){
+        return this.ExpressionStatement();
+    }
+
+    ExpressionStatement(){
+        const expresion = this.Expression();
+        this._eat(';');
+        return {
+            type: "ExpressionStatement",
+            expression: expresion,
+        }
+    }
+
+
+    /**
+     * Expression
+     * : Literal
+     * ;
+     */
+    Expression(){
+        return this.Literal();
     }
 
 
