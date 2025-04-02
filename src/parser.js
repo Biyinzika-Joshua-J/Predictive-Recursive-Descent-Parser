@@ -32,8 +32,8 @@ class Parser {
      * Main entry point.
      * 
      * Program
-     *  : NumericLiteral
-     *  : 
+     *  : LITERAL
+     *  ; 
      */
     Program(){
         return {
