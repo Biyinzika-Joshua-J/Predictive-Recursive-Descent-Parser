@@ -1,4 +1,5 @@
 
+const { type } = require('os');
 const {Tokenizer} = require('./tokenizer');
 
 
@@ -49,9 +50,9 @@ class Parser {
      * ;
      */
 
-    StatementList(){
+    StatementList(stopLookahead = null){
         const statements = [];
-        while(this._lookahead != null){
+        while(this._lookahead != null && this._lookahead.type !== stopLookahead){
             statements.push(this.Statement());
         }
         return statements;
@@ -61,10 +62,44 @@ class Parser {
     /**
      * Statement
      *  :ExpressionStatement
+     *  :BlockStatement
+     *  :EmptyStatement
      *  ;
      */
     Statement(){
-        return this.ExpressionStatement();
+        switch(this._lookahead.type){
+            case ";": return this.EmptyStatement();
+            case "{": return this.BlockStatement();
+            default: return this.ExpressionStatement();
+        }
+    }
+
+    /**
+     * EmptyStatement
+     * : ";"
+     * ;
+     */
+    EmptyStatement(){
+        this._eat(';');
+        return {
+            type: "EmptyStatement",
+        }
+    }
+
+    /**
+     * BlockStatement
+     * : "{" OptStatementList "}"
+     * ;
+     */
+    BlockStatement(){
+        this._eat('{');
+        const body = this._lookahead.type !== '}' ? this.StatementList('}') : [];
+        this._eat('}');
+
+        return {
+            type: "BlockStatement",
+            body: body,
+        }
     }
 
     ExpressionStatement(){

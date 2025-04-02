@@ -6,6 +6,8 @@ const assert = require('assert');
 const tests = [
     require('./literal.test'),
     require('./statement-list.test'),
+    require('./block.test'),
+    require('./empty-statement.test'),
 ]
 
 const parser = new Parser();
@@ -49,10 +51,12 @@ function exec(){
 function test(program, expected){
     const ast = parser.parse(program);
     assert.deepEqual(ast, expected);
-    console.log(`Test passed`);
+    // console.log(`Test passed`);
 }
 
-exec();
+// exec();
 
 tests.forEach(testRun => testRun(test));
+
+console.log('All tests passed!');
 

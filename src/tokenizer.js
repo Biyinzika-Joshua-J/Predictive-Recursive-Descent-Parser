@@ -11,6 +11,8 @@ const TokenSpec = [
 
      // Symbols, delimiters
      [/^;/, ';'],
+     [/^\{/, '{'],
+     [/^\}/, '}'],
 
 
     [/^\/\*[\s\S]*?\*\//, null],
