@@ -19,10 +19,19 @@ const TokenSpec = [
      [/^[+\-]/, 'ADDITIVE_OPERATOR'], // precedence is to the left
      [/^[*\/]/, 'MULTIPLICATIVE_OPERATOR'], // precedence is to the right
 
-    [/^\/\*[\s\S]*?\*\//, null],
-
     // Numbers
     [/^\d+/, "NUMBER"],
+
+
+     // IDENTIFIERS
+     [/^\w+/, "IDENTIFIER"],
+
+     // ASSIGNMENT OPERATORS
+     [/^=/, "SIMPLE_ASSIGN"],
+     [/^[\*\/\+\-]=/, "COMPLEX_ASSIGN"],
+
+
+    [/^\/\*[\s\S]*?\*\//, null],
 
     // Strings
     [/^"[^"]*"/, "STRING"],
